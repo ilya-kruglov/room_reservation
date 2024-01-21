@@ -14,3 +14,7 @@ async def create_meeting_room(
         session.add(db_room)
 
         await session.commit()
+
+        await session.refresh(db_room)
+
+    return db_room
