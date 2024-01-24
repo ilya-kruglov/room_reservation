@@ -6,7 +6,11 @@ from app.schemas.meeting_room import MeetingRoomCreate, MeetingRoomDB
 router = APIRouter()
 
 
-@router.post('/meeting_rooms/', response_model=MeetingRoomDB)
+@router.post(
+    '/meeting_rooms/',
+    response_model=MeetingRoomDB,
+    response_model_exclude_none=True,
+)
 async def create_new_meeting_room(
     meeting_room: MeetingRoomCreate,
 ):
