@@ -30,3 +30,13 @@ async def get_room_id_by_name(
     )
     db_room_id = db_room_id.scalars().first()
     return db_room_id
+
+
+async def read_all_rooms_from_db(
+        session: AsyncSession,
+) -> list[MeetingRoom]:
+    statement = select(MeetingRoom)
+    result = await session.execute(statement)
+    meeting_rooms = result.scalars().all()
+
+    return meeting_rooms
