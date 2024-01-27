@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -37,3 +37,19 @@ async def read_all_rooms_from_db(
 ) -> list[MeetingRoom]:
     db_rooms = await session.execute(select(MeetingRoom))
     return db_rooms.scalars().all()
+
+
+async def get_meeting_room_by_id(
+        room_id: int,
+        session: AsyncSession,
+) -> Union[MeetingRoom, None]:
+    query = select(MeetingRoom).where(MeetingRoom.id == room_id)
+    result = await session.execute(query)
+    db_room = result.scalars().first()
+    # alternative is:
+    # db_room = await session.get(MeetingRoom, room_id)
+
+    if db_room is None:
+        raise ValueError(f'MeetingRoom with ID {room_id} not found')
+
+    return db_room
