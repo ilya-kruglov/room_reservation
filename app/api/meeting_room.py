@@ -10,11 +10,11 @@ from app.crud.meeting_room import (
 )
 from app.schemas.meeting_room import MeetingRoomCreate, MeetingRoomDB
 
-router = APIRouter()
+router = APIRouter(prefix='/meeting_rooms')
 
 
 @router.post(
-    '/meeting_rooms/',
+    '/',
     response_model=MeetingRoomDB,
     response_model_exclude_none=True,
 )
@@ -33,7 +33,7 @@ async def create_new_meeting_room(
 
 
 @router.get(
-    '/meeting_rooms/',
+    '/',
     response_model=list[MeetingRoomDB],
     response_model_exclude_none=True,
 )
