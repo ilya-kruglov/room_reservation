@@ -115,3 +115,21 @@ async def check_meeting_room_exists(
             detail='Переговорка не найдена!'
         )
     return meeting_room
+
+
+@router.get(
+    '/{meeting_room_id}',
+    response_model=MeetingRoomDB,
+    response_model_exclude_none=True,
+)
+async def get_meeting_room_by_id(
+        meeting_room_id: int,
+        session: AsyncSession = Depends(get_async_session),
+):
+    meeting_room = await meeting_room_crud.get_by_id(meeting_room_id, session)
+    if meeting_room is None:
+        raise HTTPException(
+            status_code=404,
+            detail='Meeting Room not found'
+        )
+    return meeting_room

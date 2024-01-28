@@ -22,5 +22,12 @@ class CRUDMeetingRoom(CRUDBase):
         db_room_id = db_room_id.scalars().first()
         return db_room_id
 
+    async def get_by_id(
+            self,
+            room_id: int,
+            session: AsyncSession,
+    ) -> Optional[MeetingRoom]:
+        return await self.get(room_id, session)
+
 
 meeting_room_crud = CRUDMeetingRoom(MeetingRoom)
