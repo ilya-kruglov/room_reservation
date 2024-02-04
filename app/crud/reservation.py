@@ -15,6 +15,7 @@ class CRUDReservation(CRUDBase):
             meetingroom_id: int,
             session: AsyncSession,
     ) -> list[Reservation]:
+        ...
         return []
 
 
