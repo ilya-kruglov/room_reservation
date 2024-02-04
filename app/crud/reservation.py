@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
@@ -15,8 +16,16 @@ class CRUDReservation(CRUDBase):
             meetingroom_id: int,
             session: AsyncSession,
     ) -> list[Reservation]:
-        ...
-        return []
+        reservations = await session.execute(
+            select(Reservation).where(
+                Reservation.meetingroom_id == meetingroom_id,
+                and_(
+                    from_reserve <= Reservation.to_reserve,
+                    to_reserve >= Reservation.from_reserve,
+                )
+            )
+        )
+        return reservations.scalars().all()
 
 
 reservation_crud = CRUDReservation(Reservation)
