@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Extra, root_validator, validator
+from pydantic import BaseModel, Extra, Field, root_validator, validator
 
 
 class ReservationBase(BaseModel):
-    from_reserve: datetime
-    to_reserve: datetime
+    from_reserve: datetime = Field(..., example='2024-04-21T17:00')
+    to_reserve: datetime = Field(..., example='2024-04-21T18:00')
 
     class Config:
         extra = Extra.forbid
