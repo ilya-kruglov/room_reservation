@@ -5,7 +5,7 @@ from fastapi_users import (
     BaseUserManager,
     FastAPIUsers,
     IntegerIDMixin,
-    InvalidPasswordException, schemas, models,
+    InvalidPasswordException,
 )
 from fastapi_users.authentication import (
     AuthenticationBackend,
