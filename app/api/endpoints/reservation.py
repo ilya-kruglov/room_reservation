@@ -8,7 +8,7 @@ from app.api.validators import (
     check_reservation_intersections,
 )
 from app.core.db import get_async_session
-from app.core.user import current_user
+from app.core.user import current_superuser, current_user
 from app.crud.reservation import reservation_crud
 from app.schemas.reservation import (
     ReservationCreate,
@@ -43,10 +43,12 @@ async def create_reservation(
 @router.get(
     '/',
     response_model=list[ReservationDB],
+    dependencies=[Depends(current_superuser)],
 )
 async def get_all_reservations(
         session: AsyncSession = Depends(get_async_session),
 ):
+    """Только для суперюзеров."""
     return await reservation_crud.get_multi(session)
 
 
