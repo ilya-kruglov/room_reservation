@@ -28,3 +28,13 @@ async def create_reservation(
 
     new_reservation = await reservation_crud.create(reservation, session)
     return new_reservation
+
+
+@router.get(
+    '/',
+    response_model=list[ReservationDB],
+)
+async def get_all_reservations(
+        session: AsyncSession = Depends(get_async_session),
+):
+    return await reservation_crud.get_multi(session)
