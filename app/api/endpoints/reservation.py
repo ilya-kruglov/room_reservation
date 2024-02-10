@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import (
     check_meeting_room_exists,
+    check_reservation_before_edit,
     check_reservation_intersections,
 )
 from app.core.db import get_async_session
@@ -38,3 +39,22 @@ async def get_all_reservations(
         session: AsyncSession = Depends(get_async_session),
 ):
     return await reservation_crud.get_multi(session)
+
+
+@router.delete(
+    '/{reservation_id}',
+    response_model=ReservationDB,
+)
+async def delete_reservation(
+        reservation_id: int,
+        session: AsyncSession = Depends(get_async_session)
+):
+    reservation = await check_reservation_before_edit(
+        reservation_id,
+        session,
+    )
+    reservation = await reservation_crud.remove(
+        reservation,
+        session,
+    )
+    return reservation
