@@ -58,11 +58,14 @@ async def get_all_reservations(
 )
 async def delete_reservation(
         reservation_id: int,
-        session: AsyncSession = Depends(get_async_session)
+        session: AsyncSession = Depends(get_async_session),
+        user: User = Depends(current_user),
 ):
+    """Для суперюзеров или создателей объекта бронирования."""
     reservation = await check_reservation_before_edit(
         reservation_id,
         session,
+        user,
     )
     reservation = await reservation_crud.remove(
         reservation,
@@ -76,10 +79,13 @@ async def update_reservation(
         reservation_id: int,
         obj_in: ReservationUpdate,
         session: AsyncSession = Depends(get_async_session),
+        user: User = Depends(current_user),
 ):
+    """Для суперюзеров или создателей объекта бронирования."""
     reservation = await check_reservation_before_edit(
         reservation_id,
         session,
+        user,
     )
 
     await check_reservation_intersections(
