@@ -116,6 +116,7 @@ async def get_meeting_room_by_id(
 @router.get(
     '/{meeting_room_id}/reservations',
     response_model=list[ReservationDB],
+    response_model_exclude={'user_id'},
 )
 async def get_reservations_for_room(
         meeting_room_id: int,

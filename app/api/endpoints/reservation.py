@@ -96,3 +96,20 @@ async def update_reservation(
     )
 
     return reservation
+
+
+@router.get(
+    '/my_reservations',
+    response_model=list[ReservationDB],
+    response_model_exclude={'user_id'},
+)
+async def get_my_reservations(
+        session: AsyncSession = Depends(get_async_session),
+        user: User = Depends(current_user)
+):
+    """Получает список всех бронирований для текущего пользователя."""
+    reservations = await reservation_crud.get_by_user(
+        session=session,
+        user=user,
+    )
+    return reservations
